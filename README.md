@@ -8,11 +8,13 @@
    composer install
 4. Create you own empty DB
 5. Create a copy of the .env.example file and rename it to .env. Update the database and other configuration settings in the .env file.
-6. Run database migrations: 
+6. Generate an application key:
    php artisan key:generate
 7. Run database migrations:
    php artisan migrate
-8. Fill the project with random data
+8. Fill the project with random data:
    php artisan db:seed
-9. Run project
+9. Run project:
    php artisan serve  
+10. Open link where server running:
+    http://127.0.0.1:8000/
