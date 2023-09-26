@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\TasksController;
 use App\Http\Requests\TaskRequest;
 use Illuminate\Http\Response;
 use Illuminate\Http\Request;
@@ -21,39 +22,9 @@ Route::get('/', function () {
     return redirect()->route('tasks.index');
 });
 
-Route::get('/tasks', function () {
-    return view('index', [
-        'tasks' => Task::latest()->paginate(5)
-    ]);
-})->name('tasks.index');
-
-Route::get('/tasks/{task}', function (Task $task) {
-    return view('show', [
-        'task' => $task
-    ]);
-})->name('tasks.show');
-
-Route::post('/tasks', function (TaskRequest $request) {
-    Task::create($request->validated());
-
-    return redirect()->route('tasks.index')->with('success', 'Task created');
-})->name('tasks.store');
-
-Route::put('/tasks/{task}', function (Task $task, TaskRequest $request) {
-    $task->update($request->validated());
-
-    return redirect()->route('tasks.index')->with('success', 'Task updated');
-})->name('tasks.update');
-
-Route::delete('/tasks/{task}', function (Task $task) {
-    $task->delete();
-
-    return redirect()->route('tasks.index')->with('success', 'Task deleted');
-})->name('tasks.destroy');
-
-Route::put('/tasks/{task}/complete', function (Task $task) {
-    $task->completed = !$task->completed;
-    $task->save();
-
-    return redirect()->back()->with('success', 'Task updated');
-})->name('tasks.toggle-complete');
+Route::group(['prefix' => 'tasks'], function () {
+    Route::get('/', [TasksController::class,'index'])->name('tasks.index');
+    Route::post('/', [TasksController::class, 'store'])->name('tasks.store');
+    Route::delete('/{task}', [TasksController::class, 'destroy'])->name('tasks.destroy');
+    Route::put('/{task}/complete', [TasksController::class, 'update'])->name('tasks.toggle-complete');
+});

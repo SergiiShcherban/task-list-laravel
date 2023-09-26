@@ -31,10 +31,10 @@
         @forelse($tasks as $task)
             <div class="mt-2 flex items-center justify-between">
                 <div class="mr-4">
-                    <a href="{{ route('tasks.show', ['task' => $task->id]) }}"
-                    @class(['font-medium text-gray-700', 'line-through' => $task->completed])>{{ $task->title }}</a>
+                    <p
+                    @class(['font-medium text-gray-700', 'line-through' => $task->completed])>{{ $task->title }}</p>
                 </div>
-                <div>
+                <div class="flex items-center space-x-2">
                     <form method="POST" action="{{ route('tasks.toggle-complete', ['task' => $task]) }}">
                         @csrf
                         @method('PUT')
@@ -46,6 +46,13 @@
                                 </svg>
                             </button>
                         </label>
+                    </form>
+                    <form method="POST" action="{{ route('tasks.destroy', ['task' => $task->id]) }}">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="border border-gray-300 w-6 h-6 rounded-md focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-red-500">
+                            <i class="fas fa-trash text-red-500"></i>
+                        </button>
                     </form>
                 </div>
             </div>
